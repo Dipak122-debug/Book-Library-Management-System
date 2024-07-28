@@ -1,0 +1,37 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: ApiGateway
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://auth-server:9000
+  security:
+    user:
+      name: admin
+      password: admin
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+      - id: bookms
+        uri: lb://bookms
+        predicates:
+        - Path=/api/v1/book/**
+      - id: issuerms
+        uri: lb://issuerms
+        predicates:
+        - Path=/api/v1/issuer/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+    

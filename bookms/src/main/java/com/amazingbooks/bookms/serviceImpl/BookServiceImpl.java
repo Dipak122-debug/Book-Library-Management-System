@@ -12,6 +12,7 @@ import com.amazingbooks.bookms.exception.BookNotFoundException;
 import com.amazingbooks.bookms.model.BookDetails;
 import com.amazingbooks.bookms.repository.BookRepository;
 import com.amazingbooks.bookms.service.BookService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.Valid;
 
@@ -37,7 +38,11 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public ResponseEntity<String> updateBookDetails(@Valid BookDetails book) {
 		BookDetails bookDetails = bookRepo.findById(book.getIsbn()).orElseThrow(()-> new BookNotFoundException("Book does not exists"));
-		bookRepo.save(book);
+		bookDetails.setTitle(null!=book.getTitle() ? book.getTitle() : bookDetails.getTitle());
+		bookDetails.setAuthor(null!=book.getAuthor() ? book.getAuthor() : bookDetails.getAuthor());
+		bookDetails.setTotalCopies(0!=book.getTotalCopies() ? book.getTotalCopies() : bookDetails.getTotalCopies());
+		bookDetails.setIssuedCopies(0!=book.getIssuedCopies() ? book.getIssuedCopies() : bookDetails.getIssuedCopies());
+		bookRepo.save(bookDetails);
 		return new ResponseEntity<>("Book details updated successfully",HttpStatus.OK);
 	}
 
@@ -57,7 +62,6 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookDetails getBookByNameandAuthor(String name, String author) {
-		// TODO Auto-generated method stub
 		BookDetails bookDetails = bookRepo.findByTitleAndAuthor(name, author).orElseThrow(()-> new BookNotFoundException("Book does not exists"));
 		return bookDetails;
 	}

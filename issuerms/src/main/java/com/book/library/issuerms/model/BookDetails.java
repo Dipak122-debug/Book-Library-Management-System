@@ -1,5 +1,6 @@
 package com.book.library.issuerms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDetails {
+@Entity
+public class BookDetails implements Serializable,Cloneable{
+	@Id
 	private int isbn;
 	private String title;
 	private Date publishedDate;

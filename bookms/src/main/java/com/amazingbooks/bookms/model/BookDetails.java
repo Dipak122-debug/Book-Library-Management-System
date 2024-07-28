@@ -1,11 +1,13 @@
 package com.amazingbooks.bookms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +16,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class BookDetails {
+@Table
+public class BookDetails implements Serializable,Cloneable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int isbn;
+	
 	private String title;
 	private Date publishedDate;
 	private int totalCopies;
